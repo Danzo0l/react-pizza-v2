@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npm run lint
+npm run format
+
+echo -e "\n\033[32m<---TEST COMPLETED--->\n \033[36m ♂️ DUNGEON MASTER ♂️ 
+\t╭∩╮ʕ•ᴥ•ʔ╭∩╮
+\033[0m\n"
