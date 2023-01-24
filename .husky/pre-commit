@@ -4,6 +4,4 @@
 npm run lint
 npm run format
 
-echo -e "\n\033[32m<---TEST COMPLETED--->\n \033[36m ♂️ DUNGEON MASTER ♂️ 
-\t╭∩╮ʕ•ᴥ•ʔ╭∩╮
-\033[0m\n"
+echo -e "\n\033[32m<---PRE-COMMIT COMPLETED--->\n \033[36m ♂️ DUNGEON MASTER ♂️ \033[0m\n"
