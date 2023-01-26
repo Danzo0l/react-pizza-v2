@@ -1,8 +1,14 @@
 @import '../variables.scss';
 
 .categories {
+  overflow-y: hidden !important;
+  min-height: 46px !important;
+  margin-right: 10px;
   ul {
     display: flex;
+    flex-wrap: nowrap;
+    min-height: 46px;
+    overflow-y: hidden;
 
     li {
       background-color: #f9f9f9;

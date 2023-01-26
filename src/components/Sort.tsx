@@ -27,9 +27,7 @@ function Sort() {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setIsVisible(!isVisible)}>
-          {sortType[selected]}
-        </span>
+        <span onClick={() => setIsVisible(!isVisible)}>{sortType[selected]}</span>
       </div>
       {isVisible && (
         <div className="sort__popup">

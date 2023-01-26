@@ -1,6 +1,7 @@
 @import '../variables.scss';
 
 .sort {
+  min-width: 246px;
   position: relative;
   &__label {
     display: flex;
