@@ -3,6 +3,7 @@ import Sort from '../components/Sort';
 import Categories from '../components/Categories';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
+import Pagination from '../components/Pagination';
 import '../scss/app.scss';
 
 interface Pizza {
@@ -25,6 +26,7 @@ function Home(props: homeProps) {
   const [items, setItems] = useState<Array<Pizza>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [categoryId, setCategoryId] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [sortType, setSortType] = useState<{
     name: string;
     sortProperty: string;
@@ -57,7 +59,7 @@ function Home(props: homeProps) {
   useEffect(() => {
     setIsLoading(true);
     fetch(
-      `https://63ceb250d2e8c29a9bdce0e7.mockapi.io/items?${
+      `https://63ceb250d2e8c29a9bdce0e7.mockapi.io/items?page=${currentPage}&limit=4&${
         categoryId ? `category=${categoryId}&` : ''
       }sortBy=${sortType.sortProperty}&order=${sortType.param ? 'desc' : 'asc'}${
         props.searchValue ? `&search=${props.searchValue}` : ''
@@ -71,7 +73,7 @@ function Home(props: homeProps) {
         });
       });
     window.scrollTo(0, 0);
-  }, [categoryId, sortType, props.searchValue]);
+  }, [categoryId, sortType, props.searchValue, currentPage]);
 
   return (
     <div className="container">
@@ -85,6 +87,7 @@ function Home(props: homeProps) {
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">{isLoading ? skeletons : pizzasFilter}</div>
+      <Pagination onChabgePage={(number) => setCurrentPage(number)} />
     </div>
   );
 }
