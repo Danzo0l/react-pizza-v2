@@ -4,12 +4,13 @@ interface PizzaBlockProps {
   title: string;
   price: number;
   imageUrl: string;
+  raiting: number;
   sizes: Array<number>;
   types: Array<number>;
 }
 
 function PizzaBlock(props: PizzaBlockProps) {
-  const typeNmaes: Array<string> = ['Тонкое', 'Традиционное'];
+  const typeNames: Array<string> = ['Тонкое', 'Традиционное'];
 
   const [pizzaCount, setPizzaCount] = useState<number>(0);
   const [pizzaSize, setPizzaSize] = useState<number>(props.sizes[0]);
@@ -23,7 +24,9 @@ function PizzaBlock(props: PizzaBlockProps) {
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
         <img className="pizza-block__image" src={props.imageUrl} alt="Pizza" />
-        <h4 className="pizza-block__title">{props.title}</h4>
+        <h4 className="pizza-block__title">
+          {props.title} R:{props.raiting}
+        </h4>
         <div className="pizza-block__selector">
           <ul>
             {props.types.map((value) => (
@@ -32,7 +35,7 @@ function PizzaBlock(props: PizzaBlockProps) {
                 onClick={() => setPizzaType(value)}
                 className={pizzaType === value ? 'active' : ''}
               >
-                {typeNmaes[value]}
+                {typeNames[value]}
               </li>
             ))}
           </ul>

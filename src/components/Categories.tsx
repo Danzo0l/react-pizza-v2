@@ -1,6 +1,11 @@
-import { useState } from 'react';
+import React from 'react';
 
-function Categories() {
+interface categoriesProps {
+  value: number;
+  onClickCategory: React.Dispatch<React.SetStateAction<number>>;
+}
+
+function Categories(props: categoriesProps) {
   const categories: Array<string> = [
     'Все',
     'Мясные',
@@ -10,22 +15,16 @@ function Categories() {
     'Закрытые',
   ];
 
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const onClickCategory = (index: number) => {
-    setActiveIndex(index);
-  };
-
   return (
     <div className="categories">
       <ul>
-        {categories.map((value, index) => (
+        {categories.map((categoryName, index) => (
           <li
-            key={value}
-            onClick={() => onClickCategory(index)}
-            className={activeIndex === index ? 'active' : ''}
+            key={categoryName}
+            onClick={() => props.onClickCategory(index)}
+            className={props.value === index ? 'active' : ''}
           >
-            {value}
+            {categoryName}
           </li>
         ))}
       </ul>
