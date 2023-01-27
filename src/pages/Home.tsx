@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sort from '../components/Sort';
 import Categories from '../components/Categories';
 import PizzaBlock from '../components/PizzaBlock';
@@ -6,7 +6,7 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import '../scss/app.scss';
 
 interface Pizza {
-  id: 4;
+  id: number;
   imageUrl: string;
   title: string;
   types: Array<number>;
@@ -16,12 +16,48 @@ interface Pizza {
   rating: number;
 }
 
-function Home() {
+interface homeProps {
+  searchValue: string;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function Home(props: homeProps) {
   const [items, setItems] = useState<Array<Pizza>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [categoryId, setCategoryId] = useState<number>(0);
+  const [sortType, setSortType] = useState<{
+    name: string;
+    sortProperty: string;
+    param: boolean;
+  }>({
+    name: 'алфавиту',
+    sortProperty: 'title',
+    param: false,
+  });
+
+  const pizzasFilter: Array<JSX.Element> = items.map((obj) => (
+    <PizzaBlock
+      key={obj.id}
+      raiting={obj.rating}
+      title={obj.title}
+      price={obj.price}
+      imageUrl={obj.imageUrl}
+      sizes={obj.sizes}
+      types={obj.types}
+    />
+  ));
+
+  const skeletons: Array<JSX.Element> = [...new Array<undefined>(6)].map((_, index) => (
+    <Skeleton key={index} />
+  ));
 
   useEffect(() => {
-    fetch('https://63ceb250d2e8c29a9bdce0e7.mockapi.io/items')
+    setIsLoading(true);
+    fetch(
+      `https://63ceb250d2e8c29a9bdce0e7.mockapi.io/items?${
+        categoryId ? `category=${categoryId}&` : ''
+      }sortBy=${sortType.sortProperty}&order=${sortType.param ? 'desc' : 'asc'}`
+    )
       .then((res) => res.json())
       .then((json) => {
         setTimeout(() => {
@@ -30,29 +66,20 @@ function Home() {
         });
       });
     window.scrollTo(0, 0);
-  }, []);
+  }, [categoryId, sortType]);
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories />
-        <Sort />
+        <Categories value={categoryId} onClickCategory={(id) => setCategoryId(id)} />
+        <Sort
+          param={sortType.param}
+          value={sortType}
+          onClickSort={(id) => setSortType(id)}
+        />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">
-        {isLoading
-          ? [...new Array<undefined>(6)].map((_, index) => <Skeleton key={index} />)
-          : items.map((obj) => (
-              <PizzaBlock
-                key={obj.id}
-                title={obj.title}
-                price={obj.price}
-                imageUrl={obj.imageUrl}
-                sizes={obj.sizes}
-                types={obj.types}
-              />
-            ))}
-      </div>
+      <div className="content__items">{isLoading ? skeletons : pizzasFilter}</div>
     </div>
   );
 }
