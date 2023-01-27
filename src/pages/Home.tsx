@@ -35,17 +35,21 @@ function Home(props: homeProps) {
     param: false,
   });
 
-  const pizzasFilter: Array<JSX.Element> = items.map((obj) => (
-    <PizzaBlock
-      key={obj.id}
-      raiting={obj.rating}
-      title={obj.title}
-      price={obj.price}
-      imageUrl={obj.imageUrl}
-      sizes={obj.sizes}
-      types={obj.types}
-    />
-  ));
+  const pizzasFilter: Array<JSX.Element> = items
+    .filter((obj) => {
+      return obj.title.toUpperCase().includes(props.searchValue.toUpperCase());
+    })
+    .map((obj) => (
+      <PizzaBlock
+        key={obj.id}
+        raiting={obj.rating}
+        title={obj.title}
+        price={obj.price}
+        imageUrl={obj.imageUrl}
+        sizes={obj.sizes}
+        types={obj.types}
+      />
+    ));
 
   const skeletons: Array<JSX.Element> = [...new Array<undefined>(6)].map((_, index) => (
     <Skeleton key={index} />
@@ -66,7 +70,7 @@ function Home(props: homeProps) {
         });
       });
     window.scrollTo(0, 0);
-  }, [categoryId, sortType]);
+  }, [categoryId, sortType, props.searchValue]);
 
   return (
     <div className="container">
