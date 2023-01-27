@@ -49,15 +49,14 @@ function Home(props: homeProps) {
   const skeletons: Array<JSX.Element> = [...new Array<undefined>(6)].map((_, index) => (
     <Skeleton key={index} />
   ));
-  const search: string = props.searchValue ? `&search=${props.searchValue}` : '';
-
   useEffect(() => {
     setIsLoading(true);
     fetch(
       `https://63ceb250d2e8c29a9bdce0e7.mockapi.io/items?${
         categoryId ? `category=${categoryId}&` : ''
-      }sortBy=${sortType.sortProperty}&order=${sortType.param ? 'desc' : 'asc'}` +
-        search
+      }sortBy=${sortType.sortProperty}&order=${sortType.param ? 'desc' : 'asc'}${
+        props.searchValue ? `&search=${props.searchValue}` : ''
+      }`
     )
       .then((res) => res.json())
       .then((json) => {
