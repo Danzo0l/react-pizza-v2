@@ -12,7 +12,7 @@
     "quotes": ["error", "single"],
     "jsx-quotes": ["error", "prefer-double"],
     "prefer-const": "error",
-    "indent": ["off", 2],
+    "indent": ["warn", 2],
     // "max-len": ["error", {"code": 108}],
     "comma-dangle": "off",
     "semi": ["error", "always"]

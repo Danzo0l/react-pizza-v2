@@ -1,8 +1,26 @@
 @import '../variables.scss';
 
 .sort {
+  
   min-width: 246px;
   position: relative;
+
+  .sort-btn {
+    background: none;
+    border: none;
+    color: black;
+    &:hover {
+      background-color: rgba(95, 204, 190, 0.199);
+      border-radius: 50%;
+    }
+    svg {
+      padding-left: 2px;
+    }
+    &__active {
+      transform: rotate(180deg);
+    }
+  }
+
   &__label {
     display: flex;
     align-items: center;

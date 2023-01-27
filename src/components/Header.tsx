@@ -1,7 +1,14 @@
 import { Link } from 'react-router-dom';
+import React from 'react';
+import Search from './Search';
 import logoSvg from '../assets/img/pizza-logo.svg';
 
-function Header() {
+interface headerProps {
+  searchValue: string;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function Header(props: headerProps) {
   return (
     <div className="header">
       <div className="container">
@@ -12,6 +19,7 @@ function Header() {
             <p>самая вкусная пицца во вселенной</p>
           </div>
         </Link>
+        <Search searchValue={props.searchValue} setSearchValue={props.setSearchValue} />
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
             <span>520 ₽</span>
