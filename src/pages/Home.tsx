@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { SearchContext, contextObject } from '../App';
 import Sort from '../components/Sort';
 import Categories from '../components/Categories';
 import PizzaBlock from '../components/PizzaBlock';
@@ -17,12 +18,9 @@ interface Pizza {
   rating: number;
 }
 
-interface homeProps {
-  searchValue: string;
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
-}
+function Home() {
+  const { searchValue } = useContext<contextObject>(SearchContext);
 
-function Home(props: homeProps) {
   const [items, setItems] = useState<Array<Pizza>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [categoryId, setCategoryId] = useState<number>(0);
@@ -39,7 +37,7 @@ function Home(props: homeProps) {
 
   const pizzasFilter: Array<JSX.Element> = items
     .filter((obj) => {
-      return obj.title.toUpperCase().includes(props.searchValue.toUpperCase());
+      return obj.title.toUpperCase().includes(searchValue.toUpperCase());
     })
     .map((obj) => (
       <PizzaBlock
@@ -62,7 +60,7 @@ function Home(props: homeProps) {
       `https://63ceb250d2e8c29a9bdce0e7.mockapi.io/items?page=${currentPage}&limit=4&${
         categoryId ? `category=${categoryId}&` : ''
       }sortBy=${sortType.sortProperty}&order=${sortType.param ? 'desc' : 'asc'}${
-        props.searchValue ? `&search=${props.searchValue}` : ''
+        searchValue ? `&search=${searchValue}` : ''
       }`
     )
       .then((res) => res.json())
@@ -73,7 +71,7 @@ function Home(props: homeProps) {
         });
       });
     window.scrollTo(0, 0);
-  }, [categoryId, sortType, props.searchValue, currentPage]);
+  }, [categoryId, sortType, searchValue, currentPage]);
 
   return (
     <div className="container">
