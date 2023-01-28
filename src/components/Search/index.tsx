@@ -1,11 +1,10 @@
+import { useContext } from 'react';
+import { SearchContext, contextObject } from '../../App';
 import styles from './Search.module.scss';
 
-interface searchProps {
-  searchValue: string;
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
-}
+function Search() {
+  const { searchValue, setSearchValue } = useContext<contextObject>(SearchContext);
 
-function Search(props: searchProps) {
   return (
     <div className={styles.search}>
       <svg
@@ -16,14 +15,14 @@ function Search(props: searchProps) {
         <path d="M3.624,15a8.03,8.03,0,0,0,10.619.659l5.318,5.318a1,1,0,0,0,1.414-1.414l-5.318-5.318A8.04,8.04,0,0,0,3.624,3.624,8.042,8.042,0,0,0,3.624,15Zm1.414-9.96a6.043,6.043,0,1,1-1.77,4.274A6,6,0,0,1,5.038,5.038Z" />
       </svg>
       <input
-        value={props.searchValue}
-        onChange={(event) => props.setSearchValue(event.target.value)}
+        value={searchValue}
+        onChange={(event) => setSearchValue(event.target.value)}
         className={styles.input}
         placeholder="Поиск пиццы"
       />
-      {props.searchValue && (
+      {searchValue && (
         <svg
-          onClick={() => props.setSearchValue('')}
+          onClick={() => setSearchValue('')}
           className={styles.clearIcon}
           xmlns="http://www.w3.org/2000/svg"
           xmlnsXlink="http://www.w3.org/1999/xlink"
