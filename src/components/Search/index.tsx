@@ -1,9 +1,27 @@
-import { useContext } from 'react';
+import { useCallback, useContext, useRef, useState } from 'react';
+import debounce from 'lodash.debounce';
 import { SearchContext, contextObject } from '../../App';
 import styles from './Search.module.scss';
 
 function Search() {
-  const { searchValue, setSearchValue } = useContext<contextObject>(SearchContext);
+  const [searchValueLocal, setSearchValueLocal] = useState<string>('');
+  const { setSearchValue } = useContext<contextObject>(SearchContext);
+
+  // eslint-disable-next-line
+  const updateSearchValue = useCallback(
+    debounce((value: string) => {
+      setSearchValue(value);
+    }, 600),
+    []
+  );
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const onClickClear = () => {
+    setSearchValueLocal('');
+    setSearchValue('');
+    inputRef.current?.focus();
+  };
 
   return (
     <div className={styles.search}>
@@ -15,14 +33,18 @@ function Search() {
         <path d="M3.624,15a8.03,8.03,0,0,0,10.619.659l5.318,5.318a1,1,0,0,0,1.414-1.414l-5.318-5.318A8.04,8.04,0,0,0,3.624,3.624,8.042,8.042,0,0,0,3.624,15Zm1.414-9.96a6.043,6.043,0,1,1-1.77,4.274A6,6,0,0,1,5.038,5.038Z" />
       </svg>
       <input
-        value={searchValue}
-        onChange={(event) => setSearchValue(event.target.value)}
+        ref={inputRef}
+        value={searchValueLocal}
+        onChange={(event) => {
+          setSearchValueLocal(event.target.value);
+          updateSearchValue(event.target.value);
+        }}
         className={styles.input}
         placeholder="Поиск пиццы"
       />
-      {searchValue && (
+      {searchValueLocal && (
         <svg
-          onClick={() => setSearchValue('')}
+          onClick={onClickClear}
           className={styles.clearIcon}
           xmlns="http://www.w3.org/2000/svg"
           xmlnsXlink="http://www.w3.org/1999/xlink"

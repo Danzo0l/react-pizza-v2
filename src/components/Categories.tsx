@@ -2,7 +2,8 @@ import React from 'react';
 
 interface categoriesProps {
   value: number;
-  onClickCategory: React.Dispatch<React.SetStateAction<number>>;
+  // onClickCategory: React.Dispatch<React.SetStateAction<number>>;
+  onClickCategory: (id: number) => void;
 }
 
 function Categories(props: categoriesProps) {

@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-interface stateType {
+import { setSort } from '../redux/slices/filterSlice';
+import { RootState } from '../redux/store';
+
+export interface stateType {
   name: string;
   sortProperty: string;
   param: boolean;
 }
 
-interface sortProps {
-  value: stateType;
-  onClickSort: React.Dispatch<React.SetStateAction<stateType>>;
-  param: boolean;
-}
+function Sort() {
+  const dispatch = useDispatch();
+  const sort = useSelector<RootState, stateType>((state) => state.filterSlice.sort);
 
-function Sort(props: sortProps) {
-  const sortType: Array<{ name: string; sortProperty: string }> = [
+  const onClickSort = (param: stateType) => {
+    dispatch(setSort(param));
+  };
+
+  const list: Array<{ name: string; sortProperty: string }> = [
     { name: 'популярности', sortProperty: 'rating' },
     { name: 'цене', sortProperty: 'price' },
     { name: 'алфавиту', sortProperty: 'title' },
@@ -26,20 +31,20 @@ function Sort(props: sortProps) {
     setIsVisible(!isVisible);
     if (property.sortProperty === 'rating') {
       setSortParam(true);
-      props.onClickSort({
+      onClickSort({
         name: property.name,
         sortProperty: property.sortProperty,
         param: true,
       });
     } else if (property.sortProperty === 'price') {
       setSortParam(false);
-      props.onClickSort({
+      onClickSort({
         name: property.name,
         sortProperty: property.sortProperty,
         param: false,
       });
     } else {
-      props.onClickSort({
+      onClickSort({
         name: property.name,
         sortProperty: property.sortProperty,
         param: sortParam,
@@ -50,7 +55,7 @@ function Sort(props: sortProps) {
   const onClickButton = (property: stateType) => {
     setSortParam(!sortParam);
     setIsVisible(false);
-    props.onClickSort({
+    onClickSort({
       name: property.name,
       sortProperty: property.sortProperty,
       param: !sortParam,
@@ -63,7 +68,7 @@ function Sort(props: sortProps) {
     <div className="sort">
       <div className="sort__label">
         <button
-          onClick={() => onClickButton(props.value)}
+          onClick={() => onClickButton(sort)}
           className={sortParam ? 'sort-btn sort-btn__active' : 'sort-btn'}
         >
           <svg
@@ -81,17 +86,17 @@ function Sort(props: sortProps) {
         </button>
         <b>Сортировка по:</b>
         <span onClick={() => setIsVisible(!isVisible)}>
-          {sortType.filter((param) => param.name === props.value.name)[0].name}
+          {list.filter((param) => param.name === sort.name)[0].name}
         </span>
       </div>
       {isVisible && (
         <div className="sort__popup">
           <ul>
-            {sortType.map((sortIteration, index) => (
+            {list.map((sortIteration, index) => (
               <li
                 onClick={() => onClickList({ ...sortIteration, param: sortParam })}
                 key={sortIteration.name}
-                className={props.value.name === sortType[index].name ? 'active' : ''}
+                className={sort.name === list[index].name ? 'active' : ''}
               >
                 {sortIteration.name}
               </li>

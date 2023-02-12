@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Cart from './pages/Cart';
 import Header from './components/Header';
+
 import './scss/app.scss';
 
 export interface contextObject {
